@@ -5,9 +5,10 @@
 ;; Call (adventofcode.com/2015/day/1) with a file with the default pathname "adventofcode.com:2015:day:1:input.txt" to find the answer.
 
 (defun adventofcode.com/2015/day/1/Part/II (&optional (pathname adventofcode.com/2015/day/1/input.txt))
- (let ((collection nil))
+ (let ((collection (cons 0 0)))
       (with-open-file (stream pathname)
-       (loop for c = (read-char stream nil :eof) until (eq -1 (apply '+ collection))
-             collect (setq collection (cons (case c (#\( 1) (#\) -1)) collection))))
-      (length collection)))
+       (loop for c = (read-char stream nil :eof) until (eq -1 (car collection))
+             collect (progn (setf (car collection) (+ (case c (#\( 1) (#\) -1)) (car collection)))
+                      (setf (cdr collection) (+ 1 (cdr collection))))))
+      (cdr collection)))
 ;; Call (adventofcode.com/2015/day/1/Part/II) with a file with the default pathname "adventofcode.com:2015:day:1:input.txt" to find the answer.
