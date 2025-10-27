@@ -38,6 +38,8 @@
 		  ))
 ;; Call (adventofcode.com/2015/day/13) with a file with the default pathname "adventofcode.com:2015:day:13:input.txt" to find the answer.
 
+(defun apathetic-indices (&optional (list-length 8))
+	(loop for i below list-length collect (cons i (cons (+ 8 (mod (1+ i) 8)) nil))))
 (defun remove-nth-element (nth list)
   "Return a copy of a LIST, with NTH element removed."
   (loop for i in list
