@@ -39,16 +39,29 @@
 ;; Call (adventofcode.com/2015/day/13) with a file with the default pathname "adventofcode.com:2015:day:13:input.txt" to find the answer.
 
 (defun remove-nth-element (nth list)
-  (if (zerop nth) (cdr list)
-    (let ((last (nthcdr (1- nth) list)))
-      (setcdr last (cddr last))
-      list)))
-(defun round-table/you-scores (database cast-list)
-	(let ((scores-list (round-table-scores database cast-list)))
-		 (apply 'append (mapcar (lambda (scores)
-										(mapcar (lambda (x)
-														(let ((r (remove-nth-element x scores)))
-															 (if (= (length r) x) (remove-nth-element 0 r)
-																 (remove-nth-element x r))))
-												(loop for n below (length scores) collect n)))
-								scores-list))))
+  "Return a copy of a LIST, with NTH element removed."
+  (loop for i in list
+        for idx from 0
+        unless (= idx nth)
+        collect i))
+(defun candidate-round-table/you-scores (database cast-list)
+	(let* ((scores (round-table-scores database cast-list))
+		   (candidates (mapcar (lambda (x)
+									   (let ((r (remove-nth-element x scores)))
+											(if (= (1- (length r)) x) (remove-nth-element 0 r)
+												(remove-nth-element x r))))
+							   (loop for n below (length scores) collect n)))
+		   (sum-list (mapcar (lambda (x) (apply '+ x)) candidates))
+		   (max-score (apply 'max sum-list))
+		   (i (- (length candidates) (length (member max-score sum-list)))))
+		 (nth i candidates)))
+(defun adventofcode.com/2015/day/13/Part/II (&optional (pathname adventofcode.com/2015/day/13/input.txt))
+	(let* ((forms (uiop:read-file-forms pathname))
+		   (database (database forms))
+		   (cast-list (cast-list forms))
+		   (perm-list (perm cast-list))
+		   (scores/you-list (mapcar (lambda (x) (candidate-round-table/you-scores database x)) perm-list)))
+		  ;(mapcar (lambda (x) (apply '+ x)) scores/you-list)
+		  (apply 'max (mapcar (lambda (x) (apply '+ x)) scores/you-list))
+		  ))    ;=> Bah! That's not the right answer; your answer is too high.
+;; Call (adventofcode.com/2015/day/13/Part/II) with a file with the default pathname "adventofcode.com:2015:day:13:input.txt" to find the answer.
