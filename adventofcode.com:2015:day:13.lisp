@@ -1,10 +1,9 @@
-(defun perm (list)
-  (cond ((null (cdr list))     (cons list nil))
-	((= 2 (length list))   (cons list (cons (reverse list) nil)))
-	(t
-	 (apply 'append (mapcar (lambda (a)
-				  (mapcar (lambda (p) (cons a p))   (perm (remove a list))))
-				list)))))
+(defun perm (list)  (cond ((null (cdr list))   (cons list nil))
+						((= 2 (length list))   (cons list (cons (reverse list) nil)))
+						(t
+						 (apply 'append (mapcar (lambda (a)
+														(mapcar  (lambda (p) (cons a p))   (perm (remove a list))))
+												list)))))
 (defvar adventofcode.com/2015/day/13/input.txt "adventofcode.com:2015:day:13:input.txt")
 (defun database (&optional (data-list (uiop:read-file-forms adventofcode.com/2015/day/13/input.txt)))
   (let ((someone (car data-list))
@@ -21,6 +20,13 @@
 		   (rest-cast-list (if (not (null rest-list)) (cast-list rest-list))))
 		  (if (member someone rest-cast-list) rest-cast-list
 			  (cons someone rest-cast-list))))
+(defun round-table-scores (database cast-list)
+	(let* ((left-rotated (append (cdr cast-list) (cons (car cast-list) nil)))
+		   (right-rotated (append (last cast-list) (butlast cast-list)))
+		   (paired (mapcar 'list cast-list (append left-rotated right-rotated))))
+		 (mapcar (lambda (x) (caddar (member x database :test #'equal
+											 :key (lambda (x) (cons (car x) (cons (cadr x) nil))))))
+				 paired)))
 (defun adventofcode.com/2015/day/13 (&optional (pathname adventofcode.com/2015/day/13/input.txt))
 	(let ((forms (forms-inline (uiop:read-file-forms pathname))))
 		 (loop for cz in forms until (eq -1 (car collection))
