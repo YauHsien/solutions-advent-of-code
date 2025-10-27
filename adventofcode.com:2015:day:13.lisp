@@ -31,9 +31,6 @@
 	(let* ((forms (uiop:read-file-forms pathname))
 		   (database (database forms))
 		   (cast-list (cast-list forms)))
-		  ;(mapcar (lambda (x) (round-table-scores database x)) (perm cast-list))
-		  ;(perm cast-list)
-		  ;(mapcar (lambda (x) (let ((scores (round-table-scores database x))) (list (apply '+ scores) scores x))) (perm cast-list))
 		  (apply 'max (mapcar (lambda (x) (apply '+ (round-table-scores database x))) (perm cast-list)))
 		  ))
 ;; Call (adventofcode.com/2015/day/13) with a file with the default pathname "adventofcode.com:2015:day:13:input.txt" to find the answer.
@@ -62,7 +59,5 @@
 		   (cast-list (cast-list forms))
 		   (perm-list (perm cast-list))
 		   (scores/you-list (mapcar (lambda (x) (candidate-round-table/you-scores database x)) perm-list)))
-		  ;(mapcar (lambda (x) (apply '+ x)) scores/you-list)
-		  (apply 'max (mapcar (lambda (x) (apply '+ x)) scores/you-list))
-		  ))    ;=> Bah! That's not the right answer; your answer is too high.
+		  (apply 'max (mapcar (lambda (x) (apply '+ x)) scores/you-list))))
 ;; Call (adventofcode.com/2015/day/13/Part/II) with a file with the default pathname "adventofcode.com:2015:day:13:input.txt" to find the answer.
