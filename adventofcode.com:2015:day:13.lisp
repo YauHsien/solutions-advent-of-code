@@ -23,7 +23,8 @@
 (defun round-table-scores (database cast-list)
 	(let* ((left-rotated (append (cdr cast-list) (cons (car cast-list) nil)))
 		   (right-rotated (append (last cast-list) (butlast cast-list)))
-		   (paired (mapcar 'list cast-list (append left-rotated right-rotated))))
+		   (paired (mapcar 'list (append cast-list cast-list) (append left-rotated right-rotated))))
+		  ;(list :lr left-rotated :rr right-rotated :pr paired)))
 		 (mapcar (lambda (x) (caddar (member x database :test #'equal
 											 :key (lambda (x) (cons (car x) (cons (cadr x) nil))))))
 				 paired)))
@@ -32,5 +33,8 @@
 		   (database (database forms))
 		   (cast-list (cast-list forms)))
 		  ;(mapcar (lambda (x) (round-table-scores database x)) (perm cast-list))
+		  ;(perm cast-list)
+		  ;(mapcar (lambda (x) (let ((scores (round-table-scores database x))) (list (apply '+ scores) scores x))) (perm cast-list))
 		  (apply 'max (mapcar (lambda (x) (apply '+ (round-table-scores database x))) (perm cast-list)))
 		  ))
+;; Call (adventofcode.com/2015/day/13) with a file with the default pathname "adventofcode.com:2015:day:13:input.txt" to find the answer.
