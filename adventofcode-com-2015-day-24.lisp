@@ -54,3 +54,9 @@ Applicable one: (<number-great-than-0 weight-1 weight2 ...)"
                               (cons x (cdr ls))))
         (t              (cons :ok
                               (cons x (cdr ls))))))
+
+(defun adventofcode.com/2015/day/24/Part/II (&optional (pathname adventofcode.com/2015/day/24/input.txt))
+	(let* ((forms (uiop:read-file-forms pathname))
+         (sum   (floor (/ (apply '+ forms) 4.0))))
+    (factors-list (combinations-sum-upto forms sum))
+    ))
