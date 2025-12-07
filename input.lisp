@@ -1,5 +1,9 @@
 (defvar *input-file-format* "adventofcode-com-~a-day-~a-input.txt")
-(defvar *session*)
+
+(terpri)
+(write-string "> Type *session*: ")
+(finish-output)
+(defvar *session* (read-line))
 
 (defun ensure-input-file (year &key day (session *session*)) ;=> pathname
   (assert (not (null day)))
